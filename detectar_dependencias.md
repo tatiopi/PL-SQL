@@ -12,4 +12,7 @@
 
     SELECT * FROM USER_DEPENDENCIES WHERE REFERENCED_NAME = 'EMPLOYEES' ;
 
+    -- Formatear codigo
+    -- CONTROL + F7
+
 ```
