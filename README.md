@@ -1,4 +1,3 @@
-# PL-SQL
 
 ```
     SELECT * FROM USER_DEPENDENCIES ;
