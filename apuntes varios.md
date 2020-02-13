@@ -21,3 +21,24 @@ where  x.sql_hash_value = sqlarea.hash_value
 and    x.sql_address    = sqlarea.address
 and    x.username       is not null;
 ```
+
+# Pivotar una tabla
+``` SQL
+select * from (
+    select sum(importe_anco) importe, tipo_recargo_anco , id_subo
+            from anco_anotaciones_contables a
+           where anulada_anco = 'N'
+             and id_padre_anco in ( select id_eper
+                                      from aramos.ktmp_valores_liquidados)
+             and cod_prco in ('10101', '10102')
+             and cod_ocon in ('ICS')
+         group by tipo_recargo_anco, id_subo 
+         order by id_subo 
+)
+pivot 
+(
+   sum(importe)
+   for tipo_recargo_anco in ('R5','R1','R2')
+)
+order by id_subo
+```
