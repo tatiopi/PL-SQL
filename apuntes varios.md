@@ -42,3 +42,9 @@ pivot
 )
 order by id_subo
 ```
+
+### Matar un job en ejecución y matar la sesion de ese mismo job
+
+select 'alter system kill session '''||sid||','||serial#||''';' from v$session where sid in (select sid from dba_jobs_running)
+select 'exec dbms_job.remove('||job||');' from dba_jobs_running;
+
