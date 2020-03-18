@@ -50,7 +50,8 @@ select 'exec dbms_job.remove('||job||');' from dba_jobs_running;
 ```
 
 ### Detectar bloqueos
-``` SQLSELECT DECODE (L.TYPE,  'TM', 'TABLE',  'TX', 'Record(s)') TYPE_LOCK,
+``` SQL
+SELECT DECODE (L.TYPE,  'TM', 'TABLE',  'TX', 'Record(s)') TYPE_LOCK,
        DECODE (L.REQUEST, 0, 'NO', 'YES') WAIT,
        S.OSUSER OSUSER_LOCKER,
        S.PROCESS PROCESS_LOCKER,
