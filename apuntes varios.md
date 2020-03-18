@@ -48,3 +48,20 @@ order by id_subo
 select 'alter system kill session '''||sid||','||serial#||''';' from v$session where sid in (select sid from dba_jobs_running)
 select 'exec dbms_job.remove('||job||');' from dba_jobs_running;
 ```
+
+### Detectar bloqueos
+``` SQLSELECT DECODE (L.TYPE,  'TM', 'TABLE',  'TX', 'Record(s)') TYPE_LOCK,
+       DECODE (L.REQUEST, 0, 'NO', 'YES') WAIT,
+       S.OSUSER OSUSER_LOCKER,
+       S.PROCESS PROCESS_LOCKER,
+       S.USERNAME DBUSER_LOCKER,
+       O.OBJECT_NAME OBJECT_NAME,
+       O.OBJECT_TYPE OBJECT_TYPE,
+       CONCAT (' ', s.PROGRAM) PROGRAM,
+       O.OWNER OWNER,
+       SERIAL#,
+       s.STATUS,
+       s.sid
+  FROM v$lock l, dba_objects o, v$session s
+ WHERE l.ID1 = o.OBJECT_ID AND s.SID = l.SID AND l.TYPE IN ('TM', 'TX');
+```
