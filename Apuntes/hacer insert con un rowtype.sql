@@ -1,4 +1,4 @@
-``` sql 
+``` SQL
 DECLARE
 	v_row ANCO_ANOTACIONES_CONTABLES%ROWTYPE;
 
