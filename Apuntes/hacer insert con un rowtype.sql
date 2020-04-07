@@ -1,4 +1,3 @@
-``` SQL
 DECLARE
 	v_row ANCO_ANOTACIONES_CONTABLES%ROWTYPE;
 
@@ -27,4 +26,3 @@ begin
 	insert into anco_anotaciones_contables
 	 values v_row;
 end;
-```
