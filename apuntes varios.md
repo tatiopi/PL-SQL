@@ -66,3 +66,9 @@ SELECT DECODE (L.TYPE,  'TM', 'TABLE',  'TX', 'Record(s)') TYPE_LOCK,
   FROM v$lock l, dba_objects o, v$session s
  WHERE l.ID1 = o.OBJECT_ID AND s.SID = l.SID AND l.TYPE IN ('TM', 'TX');
 ```
+### Solo las N primeros registros (A partir de la version 12C)
+```SQL
+select v.fecha_ultimo_valo, v.importe_valo, v.recargo_prov_valo, v.importe_iva_valo, v.ref_externa_valo, v.*
+from   valo_valores v
+where  v.cod_conc = 'AF'  order by v.cod_conc  fetch first 3 rows only
+```
