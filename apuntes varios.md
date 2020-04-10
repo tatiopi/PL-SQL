@@ -78,3 +78,8 @@ Tenemos por ejemplo una select para las 10 mayores ventas , si en la posicion 10
 ```SQL
 select first_name , salary from employees order by salary desc fetch first 10 rows ties
 ```
+### Solo los N primeros registros saltandose X registros
+```SQL
+select first_name , salary from employees order by salary desc offset 5 rows fetch first 10 rows ties
+```
+
