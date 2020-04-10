@@ -73,13 +73,16 @@ from   valo_valores v
 where  v.cod_conc = 'AF'  order by v.cod_conc  fetch first 3 rows only
 ```
 
-### Solo los N primeros registros pero cogiendo todos los que estan en ese Rango
+### Solo los N primeros registros pero cogiendo todos los que estan en ese Rango  (A partir de la version 12C)
 Tenemos por ejemplo una select para las 10 mayores ventas , si en la posicion 10 son 1500€ de ventas pero hay 2 que tienen ese importe ,los sacara los 2 
 ```SQL
 select first_name , salary from employees order by salary desc fetch first 10 rows ties
 ```
-### Solo los N primeros registros saltandose X registros
+### Solo los N primeros registros saltandose X registros  (A partir de la version 12C)
 ```SQL
 select first_name , salary from employees order by salary desc offset 5 rows fetch first 10 rows ties
 ```
-
+### Sacar el 20% primero de esas filas  (A partir de la version 12C)
+```SQL
+select first_name , salary from employees order by salary fetch first 10 percent rows only;
+```
