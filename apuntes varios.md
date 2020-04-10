@@ -72,3 +72,9 @@ select v.fecha_ultimo_valo, v.importe_valo, v.recargo_prov_valo, v.importe_iva_v
 from   valo_valores v
 where  v.cod_conc = 'AF'  order by v.cod_conc  fetch first 3 rows only
 ```
+
+### Solo los N primeros registros pero cogiendo todos los que estan en ese Rango
+Tenemos por ejemplo una select para las 10 mayores ventas , si en la posicion 10 son 1500€ de ventas pero hay 2 que tienen ese importe ,los sacara los 2 
+```SQL
+select first_name , salary from employees order by salary desc fetch first 10 rows ties
+```
