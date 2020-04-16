@@ -1,0 +1,7 @@
+CREATE TABLE VIEW VALO_VISTA AS 
+SELECT id_eper , cod_tesv , cod_tsev , cod_tval , importe_valo , importe_iva_valo
+FROM VALO_VALORES WHERE ID_EPER IN (SELECT ID_EPER FROM EXPL_DESCUADRES);
+
+select * from VALO_VLISTA WHERE FECHA_ULTIMO_VALO > '01/01/2020' ;
+
+DROP VIEW VALO_VISTA ;
