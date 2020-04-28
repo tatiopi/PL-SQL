@@ -91,3 +91,24 @@ select first_name , salary from employees order by salary desc offset 5 rows fet
 ```SQL
 select first_name , salary from employees order by salary fetch first 10 percent rows only;
 ```
+### Hacer un JOB que ejecuta un comando
+```SQL
+BEGIN     
+    DBMS_CREDENTIAL.CREATE_CREDENTIAL(
+      credential_name  =>  'credintial',   ----- credintial name give by u
+      username         =>  'oracle',          ----- os username
+      password         =>  'oracle');    ----- os password
+     
+    DBMS_SCHEDULER.CREATE_JOB (
+        JOB_NAME=>'folder_maker',       --- job name
+        JOB_ACTION=>'/usr/bin/mkdir',    --- executable file with path
+        JOB_TYPE=>'executable',        -----   job type
+        NUMBER_OF_ARGUMENTS=>1,  --  parameters in numbers                  
+        AUTO_DROP =>false,
+        CREDENTIAL_NAME=>'credintial'   -- give credentials name which you have created before "credintial"
+        );
+    dbms_scheduler.set_job_argument_value('folder_maker',1,'/utils/utlfiles/newdir');
+    DBMS_SCHEDULER.RUN_JOB('folder_maker');
+    --commit;
+END;
+```
