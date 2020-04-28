@@ -49,6 +49,11 @@ select 'alter system kill session '''||sid||','||serial#||''';' from v$session w
 select 'exec dbms_job.remove('||job||');' from dba_jobs_running;
 ```
 
+### Matar un Job (Edu)
+``` SQL
+dbms_scheduler.drop_job(job_name => 'folder_maker3');
+``` 
+
 ### Detectar bloqueos
 ``` SQL
 SELECT DECODE (L.TYPE,  'TM', 'TABLE',  'TX', 'Record(s)') TYPE_LOCK,
