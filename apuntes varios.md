@@ -112,3 +112,8 @@ BEGIN
     --commit;
 END;
 ```
+### Job Bloqueado o ROTO (By DJ Edu)
+``` SQL 
+-- Deshabilitar, Impedir la siguiente ejecución ,
+dbms_job.broken(234,'true');
+```
