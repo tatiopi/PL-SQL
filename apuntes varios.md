@@ -7,6 +7,8 @@ where object_type in ('PACKAGE BODY', 'PACKAGE') and status = 'INVALID'
 ```
 
 ``` SQL
+
+# Sacar DLL
 select dbms_metadata.get_ddl('PACKAGE_BODY', 'CUENTA_GESTION_CONTABLE', 'EXPLOTACION') from dual;
 ``` 
 
