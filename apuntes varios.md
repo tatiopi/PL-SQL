@@ -5,10 +5,8 @@ SELECT s.status, s.*
 where object_type in ('PACKAGE BODY', 'PACKAGE') and status = 'INVALID'
 # Sacar codigo de un PL en formato BLOB
 ```
-
-``` SQL
-
 # Sacar DLL
+``` SQL
 select dbms_metadata.get_ddl('PACKAGE_BODY', 'CUENTA_GESTION_CONTABLE', 'EXPLOTACION') from dual;
 ``` 
 
