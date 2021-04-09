@@ -50,6 +50,13 @@ pivot
 order by id_subo
 ```
 
+### ver el schema que estamos
+```` SQL
+  select sys_context( 'userenv', 'current_schema' ) from dual;
+  SELECT sys_context('USERENV','DB_NAME') database_name
+    FROM dual;
+````
+
 ### Matar un job en ejecución y matar la sesion de ese mismo job
 ``` SQL
 select 'alter system kill session '''||sid||','||serial#||''';' from v$session where sid in (select sid from dba_jobs_running)
