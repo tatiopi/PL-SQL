@@ -1,42 +1,11 @@
-create table t1
-(
-    cod_cliente number(10)
-  , des_cliente varchar2(10)
-  , fec_proceso date
-);
-create table t2
-(
-    num_abonado number(10)
-  , des_abonado varchar2(10)
-  , cod_cliente number(10)
-);
-create table t3
-(
-    cod_cliente number(10)
-  , des_cliente varchar2(10)
-  , cnt_abonado number(10)
-);
-
-insert into t1
-     select rownum, 'C' || lpad(rownum, 9, 0), null
-       from dual
-    connect by level <= 5000;
-insert into t2
-     select rownum, 'A' || lpad(rownum, 9, 0), mod(rownum - 1, 5000) + 1
-       from dual
-    connect by level <= 20000;
-commit;
-
---caso 1: sin manejo de excepciones
-
 declare
     type tty_rowid is table of urowid
         index by binary_integer;
 
-    type tty_cod_cliente is table of t3.cod_cliente%type
+    type tty_cod_cliente is table of t1.cod_cliente%type
         index by binary_integer;
 
-    type tty_des_cliente is table of t3.des_cliente%type
+    type tty_des_cliente is table of t1.des_cliente%type
         index by binary_integer;
 
     type tty_cnt_abonado is table of t3.cnt_abonado%type
@@ -46,14 +15,19 @@ declare
     tab_cod_cliente tty_cod_cliente;
     tab_des_cliente tty_des_cliente;
     tab_cnt_abonado tty_cnt_abonado;
-
+    v_rows_ok       number := 0;
+    v_rows_er       number := 0;
     i               number := 0;
 
     cursor cur_test  is
          select t1.rowid, t1.cod_cliente, t1.des_cliente, count(*)
            from t1, t2
           where t1.cod_cliente = t2.cod_cliente
-        group by t1.rowid, t1.cod_cliente, t1.des_cliente;
+        group by t1.rowid, t1.cod_cliente, t1.des_cliente
+        order by t1.cod_cliente;
+
+    excp_bulk_error exception;
+    pragma exception_init(excp_bulk_error, -24381);
 begin
     open cur_test;
 
@@ -67,7 +41,7 @@ begin
 
         exit when tab_rowid.count = 0;
 
-        forall i in 1 .. tab_rowid.count
+        forall i in 1 .. tab_rowid.count save exceptions
             insert into t3
                  values (
                             tab_cod_cliente(i)
@@ -84,6 +58,21 @@ begin
 
     close cur_test;
 exception
+    when excp_bulk_error then
+        p('# Handler global ');
+        v_rows_ok := sql%rowcount;
+        v_rows_er := sql%bulk_exceptions.count;
+        p('# Rows[OK] ', v_rows_ok);
+        p('# Rows[ER] ', v_rows_er);
+
+        for i in 1 .. v_rows_er
+        loop
+            p('# Row         ', sql%bulk_exceptions(i).error_index);
+            p('# Code        ', sql%bulk_exceptions(i).error_code);
+            p('# Descripcion ', sqlerrm(-sql%bulk_exceptions(i).error_code));
+        end loop;
+
+        rollback;
     when others then
         rollback;
 end;
