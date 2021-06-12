@@ -1,3 +1,10 @@
+# Saber cambpos nulleables
+```
+select column_name,nullable,data_default
+from user_tab_columns 
+where TABLE_NAME = 'ANCO_ANOTACIONES_CONTABLES' AND NULLABLE = 'N';
+```
+
 # Paquetes descompilados
 ``` SQL
 SELECT s.status, s.*
