@@ -38,3 +38,31 @@ BEGIN
 	DBMS_OUTPUT.PUT_LINE(SALARIOS.NEXT(3));
 END;
 /
+
+
+DECLARE
+   TYPE suma_conceptos IS RECORD
+   (
+      importe    valo_valores.importe_Valo%TYPE,
+      cod_conc   valo_valores.cod_conc%TYPE
+   );
+
+   TYPE t_suma_concepto IS TABLE OF suma_conceptos
+      INDEX BY PLS_INTEGER;
+
+   suma_concepto   t_suma_concepto;
+BEGIN
+     SELECT SUM (importe_valo), cod_conc
+       BULK COLLECT INTO suma_concepto
+       FROM valo_valores
+   GROUP BY cod_conc;
+
+   FOR i IN 1 .. suma_concepto.COUNT
+   LOOP
+      comun.imprime (
+            'concepto '
+         || suma_concepto (i).cod_conc
+         || ' importe total '
+         || suma_concepto (i).importe);
+   END LOOP;
+END;
